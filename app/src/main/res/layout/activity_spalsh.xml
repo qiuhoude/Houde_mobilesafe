@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@mipmap/logo2"
     tools:context=".MainActivity"
+    android:id="@+id/rl_spl_root"
     >
 
     <TextView
