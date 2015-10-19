@@ -17,7 +17,7 @@ import com.qiu.houde_mobilesafe.utils.AppUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-;
+
 
 
 public class SplashActivity extends Activity {
@@ -50,6 +50,7 @@ public class SplashActivity extends Activity {
         ButterKnife.bind(this);
         tvVersion.setText("版本号:" + AppUtils.getVersionName(getApplicationContext()));
         progressBar.setVisibility(View.VISIBLE);
+        //渐变的动画
         AlphaAnimation  anim = new AlphaAnimation(0.3F,1F);
         anim.setDuration(3000);
         rlSplRoot.setAnimation(anim);

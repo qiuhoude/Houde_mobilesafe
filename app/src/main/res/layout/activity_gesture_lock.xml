@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:qiu="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/tv_lock_title"
+        style="@style/TitleStyle"
+        android:text="手势密码设置"
+        android:layout_marginBottom="20dp"/>
+
+    <com.qiu.houde_mobilesafe.view.GestureLockViewGroup
+        android:id="@+id/glvg_lock"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:background="#F2F2F7"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        qiu:count="3"
+        qiu:tryTimes="5" />
+    <!--
+         qiu:color_finger_on="#FF1734BF"
+        qiu:color_no_finger_inner_circle="#ff085D58"
+        qiu:color_no_finger_outer_circle="#ff08F0E0" -->
+
+    <LinearLayout
+        android:id="@+id/ll_lock_btlayout"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <Button
+            android:id="@+id/ibt_ok_lock"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="设置密码"
+            />
+
+    </LinearLayout>
+</LinearLayout>

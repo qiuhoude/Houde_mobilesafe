@@ -2,7 +2,9 @@ package com.qiu.houde_mobilesafe.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,6 +42,7 @@ public class HomeActivity extends Activity {
             R.mipmap.home_taskmanager, R.mipmap.home_netmanager,
             R.mipmap.home_trojan, R.mipmap.home_sysoptimize,
             R.mipmap.home_tools, R.mipmap.home_settings};
+    private SharedPreferences mPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         initDatas();
+        mPref = getSharedPreferences("config", MODE_PRIVATE);
         mAdapter = new QuickAdapter<HomeBean>(this, R.layout.home_list_item, mDatas) {
             @Override
             protected void convert(BaseAdapterHelper helper, HomeBean item) {
@@ -60,9 +64,22 @@ public class HomeActivity extends Activity {
         gvHome.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
+                switch (position) {
+                    case 0: {
+                        //手机防盗
+                        String savedPassword = mPref.getString("password", null);
+                        Intent lostIntent = new Intent(HomeActivity.this, GestureLookAcitvity.class);
+                        if (!TextUtils.isEmpty(savedPassword)) {
+                            lostIntent.putExtra(GestureLookAcitvity.LOCK_TYPE, GestureLookAcitvity.UNLOCK);
+                        } else {
+                            lostIntent.putExtra(GestureLookAcitvity.LOCK_TYPE, GestureLookAcitvity.SET_LOCK);
+                        }
+                        startActivity(lostIntent);
+                    }
+                    break;
                     case 8:
-                        Intent settingIntent = new Intent(HomeActivity.this,SettingsActivity.class);
+                        //设置中心
+                        Intent settingIntent = new Intent(HomeActivity.this, SettingsActivity.class);
                         startActivity(settingIntent);
                         break;
 
@@ -70,7 +87,6 @@ public class HomeActivity extends Activity {
             }
         });
     }
-
 
 
     private void initDatas() {
