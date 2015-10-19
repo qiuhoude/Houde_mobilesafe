@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
-        android:background="@drawable/listview_divider" />
+        android:background="@mipmap/listview_divider" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -49,7 +49,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:src="@drawable/lock" />
+            android:src="@mipmap/lock" />
     </RelativeLayout>
 
     <ImageView
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
-        android:background="@drawable/listview_divider" />
+        android:background="@mipmap/listview_divider" />
 
     <TextView
         style="@style/ContentStyle"
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
-        android:background="@drawable/listview_divider" />
+        android:background="@mipmap/listview_divider" />
 
     <TextView
         android:layout_width="match_parent"

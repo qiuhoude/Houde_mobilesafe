@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/setup1" />
+            android:src="@mipmap/setup1" />
 
         <Button style="@style/NextStyle" />
     </RelativeLayout>
