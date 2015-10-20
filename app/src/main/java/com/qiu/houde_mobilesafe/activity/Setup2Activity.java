@@ -1,42 +1,76 @@
 package com.qiu.houde_mobilesafe.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
-import com.itheima52.mobilesafe.R;
+import com.qiu.houde_mobilesafe.R;
+import com.qiu.houde_mobilesafe.utils.AppUtils;
+import com.qiu.houde_mobilesafe.utils.Consts;
+import com.qiu.houde_mobilesafe.utils.SPUtils;
+import com.qiu.houde_mobilesafe.view.SettingItemView;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 /**
  * 第2个设置向导页
- * 
+ *
  * @author Kevin
- * 
  */
-public class Setup2Activity extends Activity {
+public class Setup2Activity extends BaseSetupActivity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_setup2);
-	}
+    @Bind(R.id.siv_sim)
+    SettingItemView sivSim;
+    @Bind(R.id.imageView1)
+    ImageView imageView1;
 
-	// 下一页
-	public void next(View view) {
-		startActivity(new Intent(this, Setup3Activity.class));
-		finish();
 
-		// 两个界面切换的动画
-		overridePendingTransition(R.anim.tran_in, R.anim.tran_out);// 进入动画和退出动画
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_setup2);
+        ButterKnife.bind(this);
+        //设置状态
+        boolean isBind_sim = false;
 
-	// 上一页
-	public void previous(View view) {
-		startActivity(new Intent(this, Setup1Activity.class));
-		finish();
+        if (SPUtils.contains(getApplicationContext(), Consts.SIM_SERIAL)) {
+            isBind_sim = true;
+        }
+        sivSim.setChecked(isBind_sim);
 
-		// 两个界面切换的动画
-		overridePendingTransition(R.anim.tran_previous_in,
-				R.anim.tran_previous_out);// 进入动画和退出动画
-	}
+        sivSim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 判断当前的勾选状态
+                if (sivSim.isChecked()) {
+                    // 设置不勾选
+                    sivSim.setChecked(false);
+                    SPUtils.remove(getApplicationContext(), Consts.SIM_SERIAL);
+                } else {
+                    sivSim.setChecked(true);
+                    //保存sim serial码
+                    String sim = AppUtils.getSimSerialNumber(getApplicationContext());
+                    SPUtils.put(getApplicationContext(), Consts.SIM_SERIAL, sim);
+                }
+            }
+        });
+
+    }
+
+    @Override
+    protected void showPreviousPage() {
+        startActivity(new Intent(this, Setup1Activity.class));
+        finish();
+    }
+
+    @Override
+    protected void showNextPage() {
+        startActivity(new Intent(this, Setup3Activity.class));
+        finish();
+
+    }
+
 }

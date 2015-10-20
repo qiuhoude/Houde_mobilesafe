@@ -114,6 +114,19 @@ public class AppUtils {
 	}
 
 	/**
+	 * 获取sim卡的序列号
+	 * @param context
+	 * @return
+	 */
+	public static String getSimSerialNumber(Context context){
+		final TelephonyManager tm = (TelephonyManager) context
+				.getSystemService(Context.TELEPHONY_SERVICE);
+		String simSerialNumber = tm.getSimSerialNumber();
+		return simSerialNumber;
+
+	}
+
+	/**
 	 * 获取手机号码
 	 * 
 	 * @param context
@@ -141,5 +154,8 @@ public class AppUtils {
 		}
 		return apkMD5;
 	}
+
+
+
 	
 }

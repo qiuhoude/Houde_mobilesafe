@@ -83,7 +83,7 @@ public class GestureLookAcitvity extends Activity {
             @Override
             public void onUnmatchedExceedBoundary() {
                 if (mCurrentLockType == UNLOCK) {
-                    Toasts.showShort(GestureLookAcitvity.this, "已经输错5次");
+                   // Toasts.showShort(GestureLookAcitvity.this, "已经输错5次");
                 }
             }
         });
@@ -118,8 +118,9 @@ public class GestureLookAcitvity extends Activity {
         mCurrentLockType = getIntent().getIntExtra(LOCK_TYPE, SET_LOCK);
         if (mCurrentLockType == UNLOCK) {
             //如果是解锁页面就需要获取密码
-            mLockAnswer = getIntent().getIntArrayExtra("LOCK_ANSWER");
+            mLockAnswer = getIntent().getIntArrayExtra(LOCK_ANSWER);
             llLockBtlayout.setVisibility(View.INVISIBLE);
+            glvgLock.setAnswer(mLockAnswer);
             tvLockTitle.setText("解锁手势密码");
         } else if (mCurrentLockType == SET_LOCK) {
             //如果是设置密码

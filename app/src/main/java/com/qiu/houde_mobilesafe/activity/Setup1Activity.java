@@ -1,11 +1,10 @@
 package com.qiu.houde_mobilesafe.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
-import com.itheima52.mobilesafe.R;
+import com.qiu.houde_mobilesafe.R;
+
 
 /**
  * 第一个设置向导页
@@ -13,20 +12,25 @@ import com.itheima52.mobilesafe.R;
  * @author Kevin
  * 
  */
-public class Setup1Activity extends Activity {
+public class Setup1Activity extends BaseSetupActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setup1);
+
+
 	}
 
-	// 下一页
-	public void next(View view) {
+	@Override
+	protected void showPreviousPage() {
+
+	}
+
+	@Override
+	protected void showNextPage() {
 		startActivity(new Intent(this, Setup2Activity.class));
 		finish();
-		
-		//两个界面切换的动画
-		overridePendingTransition(R.anim.tran_in, R.anim.tran_out);//进入动画和退出动画
 	}
+
 }

@@ -33,7 +33,7 @@
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:background">@drawable/btn_green_selector</item>
-        <item name="android:drawableRight">@drawable/next</item>
+        <item name="android:drawableRight">@mipmap/next</item>
         <item name="android:text">下一步</item>
         <item name="android:onClick">next</item>
     </style>
@@ -44,9 +44,17 @@
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:background">@drawable/btn_green_selector</item>
-        <item name="android:drawableLeft">@drawable/previous</item>
+        <item name="android:drawableLeft">@mipmap/previous</item>
         <item name="android:text">上一步</item>
         <item name="android:onClick">previous</item>
     </style>
 
+    
+    <style name="ActivityEnterExitAnim" parent="AppTheme">
+        <item name="android:activityOpenEnterAnimation">@anim/tran_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/tran_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/tran_previous_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/tran_previous_out</item>
+
+    </style>
 </resources>

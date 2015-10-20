@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:itheima="http://schemas.android.com/apk/res/com.itheima52.mobilesafe"
+    xmlns:qiu="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -25,9 +25,9 @@
         android:id="@+id/siv_sim"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        itheima:desc_off="sim卡没有绑定"
-        itheima:desc_on="sim卡已经绑定"
-        itheima:title="点击绑定sim卡" />
+        qiu:desc_off="sim卡没有绑定"
+        qiu:desc_on="sim卡已经绑定"
+        qiu:title="点击绑定sim卡" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/bind" />
+            android:src="@mipmap/bind" />
 
         <Button style="@style/NextStyle" />
 

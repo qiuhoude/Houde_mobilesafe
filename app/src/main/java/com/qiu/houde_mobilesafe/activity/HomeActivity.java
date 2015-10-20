@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
 import com.qiu.houde_mobilesafe.R;
+import com.qiu.houde_mobilesafe.utils.Consts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,12 +46,12 @@ public class HomeActivity extends Activity {
     private SharedPreferences mPref;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         initDatas();
-        mPref = getSharedPreferences("config", MODE_PRIVATE);
+        mPref = getSharedPreferences(Consts.CONFIG, MODE_PRIVATE);
         mAdapter = new QuickAdapter<HomeBean>(this, R.layout.home_list_item, mDatas) {
             @Override
             protected void convert(BaseAdapterHelper helper, HomeBean item) {
@@ -67,10 +68,15 @@ public class HomeActivity extends Activity {
                 switch (position) {
                     case 0: {
                         //手机防盗
-                        String savedPassword = mPref.getString("password", null);
+                        String savedPassword = mPref.getString(Consts.PASSWORD, null);
                         Intent lostIntent = new Intent(HomeActivity.this, GestureLookAcitvity.class);
                         if (!TextUtils.isEmpty(savedPassword)) {
                             lostIntent.putExtra(GestureLookAcitvity.LOCK_TYPE, GestureLookAcitvity.UNLOCK);
+                            int[] pwdInt = new int[savedPassword.length()];
+                            for (int i = 0; i < savedPassword.length(); i++) {
+                                pwdInt[i] = Integer.parseInt(String.valueOf(savedPassword.charAt(i)));
+                            }
+                            lostIntent.putExtra(GestureLookAcitvity.LOCK_ANSWER, pwdInt);
                         } else {
                             lostIntent.putExtra(GestureLookAcitvity.LOCK_TYPE, GestureLookAcitvity.SET_LOCK);
                         }
