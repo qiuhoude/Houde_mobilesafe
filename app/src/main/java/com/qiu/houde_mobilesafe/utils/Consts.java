@@ -9,4 +9,7 @@ public class Consts {
     public static final String SIM_SERIAL = "sim_serial";
     public static final String PASSWORD = "password";
     public static final String CONFIGED = "configed";
+    public static final String SAFE_PHONE = "safe_phone";
+    public static final String PROTECT = "protect";
+    public static final String LOCATION = "location";
 }

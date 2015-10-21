@@ -1,10 +1,16 @@
 package com.qiu.houde_mobilesafe.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.qiu.houde_mobilesafe.R;
+import com.qiu.houde_mobilesafe.utils.Consts;
+import com.qiu.houde_mobilesafe.utils.SPUtils;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 /**
@@ -14,18 +20,42 @@ import com.qiu.houde_mobilesafe.R;
  */
 public class Setup4Activity extends BaseSetupActivity {
 
-    private SharedPreferences mPref;
+    @Bind(R.id.cc_setup)
+    CheckBox ccSetup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup4);
+        ButterKnife.bind(this);
 
-        mPref = getSharedPreferences("config", MODE_PRIVATE);
+        boolean protect = (Boolean) SPUtils.get(getApplicationContext(), "protect", false);
+        // 根据sp保存的状态,更新checkbox
+        if (protect) {
+            ccSetup.setText("防盗保护已经开启");
+            ccSetup.setChecked(true);
+        } else {
+            ccSetup.setText("防盗保护没有开启");
+            ccSetup.setChecked(false);
+        }
+
+        ccSetup.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    ccSetup.setText("防盗保护已经开启");
+                    SPUtils.put(getApplicationContext(), Consts.PROTECT, true);
+                } else {
+                    ccSetup.setText("防盗保护没有开启");
+                    SPUtils.put(getApplicationContext(), Consts.PROTECT, false);
+                }
+            }
+        });
     }
 
     @Override
     protected void showPreviousPage() {
+
         startActivity(new Intent(this, Setup3Activity.class));
         finish();
     }
@@ -34,7 +64,7 @@ public class Setup4Activity extends BaseSetupActivity {
     protected void showNextPage() {
         startActivity(new Intent(this, LostFindActivity.class));
         finish();
-        mPref.edit().putBoolean("configed", true).commit();// 更新sp,表示已经展示过设置向导了,下次进来就不展示啦
+        SPUtils.put(getApplicationContext(), Consts.CONFIGED, true);// 更新sp,表示已经展示过设置向导了,下次进来就不展示啦
     }
 
 }

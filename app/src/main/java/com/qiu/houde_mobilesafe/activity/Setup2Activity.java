@@ -9,6 +9,7 @@ import com.qiu.houde_mobilesafe.R;
 import com.qiu.houde_mobilesafe.utils.AppUtils;
 import com.qiu.houde_mobilesafe.utils.Consts;
 import com.qiu.houde_mobilesafe.utils.SPUtils;
+import com.qiu.houde_mobilesafe.utils.Toasts;
 import com.qiu.houde_mobilesafe.view.SettingItemView;
 
 import butterknife.Bind;
@@ -68,6 +69,10 @@ public class Setup2Activity extends BaseSetupActivity {
 
     @Override
     protected void showNextPage() {
+        if(!SPUtils.contains(this,Consts.SIM_SERIAL)){
+            Toasts.showShort(this,"必须绑定sim卡!");
+            return;
+        }
         startActivity(new Intent(this, Setup3Activity.class));
         finish();
 

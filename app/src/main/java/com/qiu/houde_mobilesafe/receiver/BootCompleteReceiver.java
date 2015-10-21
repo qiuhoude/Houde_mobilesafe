@@ -3,6 +3,7 @@ package com.qiu.houde_mobilesafe.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.telephony.SmsManager;
 import android.text.TextUtils;
 
 import com.qiu.houde_mobilesafe.utils.AppUtils;
@@ -28,8 +29,12 @@ public class BootCompleteReceiver extends BroadcastReceiver {
                 Logs.d("手机安全");
             }else{
                 Logs.d("sim卡有变化，需要发送短信！");
+                String phone = (String) SPUtils.get(context,Consts.SAFE_PHONE,"");
+                // 发送短信给安全号码
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(phone, null,
+                        "sim card changed!", null, null);
             }
-
         }
 
     }
