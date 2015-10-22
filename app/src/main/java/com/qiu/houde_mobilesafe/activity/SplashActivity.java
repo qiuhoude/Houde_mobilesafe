@@ -13,11 +13,17 @@ import android.widget.TextView;
 
 import com.qiu.houde_mobilesafe.R;
 import com.qiu.houde_mobilesafe.utils.AppUtils;
+import com.qiu.houde_mobilesafe.utils.Consts;
+import com.qiu.houde_mobilesafe.utils.Logs;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-
 
 
 public class SplashActivity extends Activity {
@@ -51,12 +57,46 @@ public class SplashActivity extends Activity {
         tvVersion.setText("版本号:" + AppUtils.getVersionName(getApplicationContext()));
         progressBar.setVisibility(View.VISIBLE);
         //渐变的动画
-        AlphaAnimation  anim = new AlphaAnimation(0.3F,1F);
+        AlphaAnimation anim = new AlphaAnimation(0.3F, 1F);
         anim.setDuration(3000);
         rlSplRoot.setAnimation(anim);
 
+        copyDB(Consts.ADDRESS_DB);
         mHandler.sendEmptyMessageDelayed(REDIRECT_MAIN, 3000);
     }
 
+
+    /**
+     * 拷贝数据库
+     *
+     * @param dbName
+     */
+    private void copyDB(String dbName) {
+        InputStream in = null;
+        OutputStream out = null;
+        File fileDB = new File(getFilesDir(), dbName);
+        if (fileDB.exists()) {
+            Logs.d("address.db已经存在");
+            return;
+        }
+        try {
+            in = getAssets().open(dbName);
+            out = new FileOutputStream(fileDB);
+            int len = 0;
+            byte[] buff = new byte[1024];
+            while ((len = in.read(buff)) != -1) {
+                out.write(buff, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                in.close();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

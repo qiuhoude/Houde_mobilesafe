@@ -12,4 +12,6 @@ public class Consts {
     public static final String SAFE_PHONE = "safe_phone";
     public static final String PROTECT = "protect";
     public static final String LOCATION = "location";
+    public static final String ADDRESS_DB = "address.db";
+    public static final String AUTO_UPDATE = "auto_update";
 }

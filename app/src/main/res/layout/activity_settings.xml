@@ -16,4 +16,12 @@
         qiu:desc_off="自动更新已关闭"
         qiu:desc_on="自动更新已开启"
         qiu:title="自动更新设置" />
+
+    <com.qiu.houde_mobilesafe.view.SettingItemView
+        android:id="@+id/siv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        qiu:desc_off="归属地显示关闭"
+        qiu:desc_on="归属地显示开启"
+        qiu:title="电话归属地显示设置" />
 </LinearLayout>

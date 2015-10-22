@@ -83,6 +83,11 @@ public class HomeActivity extends Activity {
                         startActivity(lostIntent);
                     }
                     break;
+                    case 7:
+                        //高级工具
+                        Intent atoolsIntent = new Intent(HomeActivity.this, AToolsActivity.class);
+                        startActivity(atoolsIntent);
+                        break;
                     case 8:
                         //设置中心
                         Intent settingIntent = new Intent(HomeActivity.this, SettingsActivity.class);
