@@ -24,4 +24,17 @@
         qiu:desc_off="归属地显示关闭"
         qiu:desc_on="归属地显示开启"
         qiu:title="电话归属地显示设置" />
+
+    <com.qiu.houde_mobilesafe.view.SettingClickView
+        android:id="@+id/scv_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        qiu:title="归属地提示框风格" />
+
+    <com.qiu.houde_mobilesafe.view.SettingClickView
+        android:id="@+id/scv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        qiu:title="归属地提示框显示位置" />
+
 </LinearLayout>

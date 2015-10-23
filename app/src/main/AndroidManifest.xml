@@ -42,6 +42,7 @@
         <activity android:name=".activity.ContactActivity" />
         <activity android:name=".activity.AToolsActivity" />
         <activity android:name=".activity.AddressActivity" />
+        <activity android:name=".activity.DragViewActivity" />
 
         <receiver
             android:name=".receiver.BootCompleteReceiver"
@@ -72,14 +73,6 @@
             android:exported="true" >
         </service>
 
-        <receiver
-            android:name=".receiver.OutCallReceiver"
-            android:enabled="true"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.NEW_OUTGOING_CALL"/>
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

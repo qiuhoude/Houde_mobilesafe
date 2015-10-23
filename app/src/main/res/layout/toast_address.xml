@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/call_locate_blue"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_call" />
+
+    <TextView
+        android:id="@+id/tv_toast_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="未知号码"
+        android:textColor="#fff"
+        android:textSize="18sp" />
+</LinearLayout>
