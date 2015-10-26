@@ -83,6 +83,10 @@ public class HomeActivity extends Activity {
                         startActivity(lostIntent);
                     }
                     break;
+                    case 1:
+                        //通讯卫士
+
+                        break;
                     case 7:
                         //高级工具
                         Intent atoolsIntent = new Intent(HomeActivity.this, AToolsActivity.class);

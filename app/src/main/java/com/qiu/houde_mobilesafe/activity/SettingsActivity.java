@@ -60,7 +60,7 @@ public class SettingsActivity extends Activity {
 
 
     /**
-     * 初始来风格
+     * 初始化风格
      */
     private void initAddressStyleView() {
         final int style = (Integer) SPUtils.get(this, Consts.ADDRESS_STYLE, 0);
