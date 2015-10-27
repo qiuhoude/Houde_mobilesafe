@@ -8,5 +8,6 @@
         style="@style/TitleStyle"
         android:text="黑名单管理" />
 
-
+    <include
+        layout="@layout/list_view"/>
 </LinearLayout>
