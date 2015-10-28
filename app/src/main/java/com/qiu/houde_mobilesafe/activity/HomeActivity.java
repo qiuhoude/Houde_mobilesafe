@@ -85,7 +85,8 @@ public class HomeActivity extends Activity {
                     break;
                     case 1:
                         //通讯卫士
-
+                        Intent callsafeIntent = new Intent(HomeActivity.this, CallSafeActivity.class);
+                        startActivity(callsafeIntent);
                         break;
                     case 7:
                         //高级工具

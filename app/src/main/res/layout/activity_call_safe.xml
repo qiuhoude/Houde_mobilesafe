@@ -1,13 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        style="@style/TitleStyle"
-        android:text="黑名单管理" />
 
-    <include
-        layout="@layout/list_view"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/TitleStyle"
+            android:text="黑名单管理" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:onClick="addBlackNumrue"
+            android:text="添加" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="11">
+
+        <LinearLayout
+            android:id="@+id/ll_pb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="玩命加载中..." />
+
+        </LinearLayout>
+
+        <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/gl_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            cube_ptr:ptr_duration_to_close="200"
+            cube_ptr:ptr_duration_to_close_header="1000"
+            cube_ptr:ptr_keep_header_when_refresh="true"
+            cube_ptr:ptr_pull_to_fresh="false"
+            cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+            cube_ptr:ptr_resistance="1.7">
+
+            <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+
+    </FrameLayout>
+
+
 </LinearLayout>
