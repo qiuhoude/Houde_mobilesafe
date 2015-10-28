@@ -39,4 +39,12 @@ public class BlackNumberInfo {
     public void setMode(String mode) {
         this.mode = mode;
     }
+
+    @Override
+    public String toString() {
+        return "BlackNumberInfo{" +
+                "number='" + number + '\'' +
+                ", mode='" + mode + '\'' +
+                '}';
+    }
 }

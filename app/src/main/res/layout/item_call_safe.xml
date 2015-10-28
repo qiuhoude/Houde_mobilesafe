@@ -18,11 +18,20 @@
         android:layout_below="@id/tv_number"
         android:text="电话拦截"/>
 
-    <ImageView
-        android:id="@+id/iv_delete"
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_delete"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:background="@mipmap/ic_delete_btn"/>-->
+    <TextView
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
-        android:background="@mipmap/ic_delete_btn"/>
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:text="向左滑动"/>
+
 </RelativeLayout>

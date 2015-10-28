@@ -139,14 +139,14 @@ public class BlackNumberDao {
      */
     public List<BlackNumberInfo> findPar2(int startIndex, int maxCount) {
         SQLiteDatabase db = dbhelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select number,mode from blacknumber limit ? offset ?", new String[]{String.valueOf(maxCount),
+        Cursor cursor = db.rawQuery("select number,mode from blacknumber  order by _id desc limit ? offset ?", new String[]{String.valueOf(maxCount),
                 String.valueOf(startIndex)});
         List<BlackNumberInfo> blackNumberInfos = new ArrayList<BlackNumberInfo>();
         while (cursor.moveToNext()) {
             BlackNumberInfo blackNumberInfo = new BlackNumberInfo();
             blackNumberInfo.setMode(cursor.getString(1));
             blackNumberInfo.setNumber(cursor.getString(0));
-            blackNumberInfos.add(blackNumberInfo);
+            blackNumberInfos.add(0,blackNumberInfo);
         }
         cursor.close();
         db.close();

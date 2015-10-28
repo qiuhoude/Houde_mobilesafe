@@ -1,11 +1,17 @@
 package com.qiu.houde_mobilesafe.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -17,6 +23,7 @@ import com.qiu.houde_mobilesafe.R;
 import com.qiu.houde_mobilesafe.bean.BlackNumberInfo;
 import com.qiu.houde_mobilesafe.db.dao.BlackNumberDao;
 import com.qiu.houde_mobilesafe.utils.DensityUtils;
+import com.qiu.houde_mobilesafe.utils.Toasts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,32 +66,34 @@ public class CallSafeActivity extends Activity {
         dao = new BlackNumberDao(getApplicationContext());
         blackNumberInfos = new ArrayList<BlackNumberInfo>();
         initView();
-
-        //开启进度条
-        llPb.setVisibility(View.VISIBLE);
         initDate();
-
-
     }
 
     private void initDate() {
+        //开启进度条
+        llPb.setVisibility(View.VISIBLE);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 //分批加载数据
-                if (blackNumberInfos.size() == 0) {
-                    blackNumberInfos.addAll(dao.findPar2(mStartIndex, maxCount));
-                    EventBus.getDefault().post(new Integer(0));
-
-                } else {
-                    //把后面的数据。追加到blackNumberInfos集合里面。防止黑名单被覆盖
-                    blackNumberInfos.addAll(0, dao.findPar2(mStartIndex, maxCount));
-                    EventBus.getDefault().post(new Integer(1));
-                }
-
+                List<BlackNumberInfo> envet = dao.findPar2(mStartIndex, maxCount);
+                EventBus.getDefault().post(envet);
             }
         }).start();
     }
+
+    public void onEventMainThread(List<BlackNumberInfo> envet) {
+        //关闭进度条
+        llPb.setVisibility(View.INVISIBLE);
+        gl_Refresh.refreshComplete();
+        if (envet.size() != 0) {
+            blackNumberInfos.addAll(0, envet);
+            mAdapter.clear();
+            mAdapter.addAll(blackNumberInfos);
+            mStartIndex += maxCount;
+        }
+    }
+
 
     private void initView() {
         //create a SwipeMenuCreator to add items.
@@ -93,21 +102,21 @@ public class CallSafeActivity extends Activity {
             @Override
             public void create(SwipeMenu menu) {
                 // create "open" item
-                SwipeMenuItem openItem = new SwipeMenuItem(
-                        getApplicationContext());
-                // set item background
-                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-                        0xCE)));
-                // set item width
-                openItem.setWidth(DensityUtils.dp2px(getApplicationContext(), 90L));
-                // set item title
-                openItem.setTitle("编辑");
-                // set item title fontsize
-                openItem.setTitleSize(18);
-                // set item title font color
-                openItem.setTitleColor(Color.WHITE);
-                // add to menu
-                menu.addMenuItem(openItem);
+//                SwipeMenuItem openItem = new SwipeMenuItem(
+//                        getApplicationContext());
+//                // set item background
+//                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+//                        0xCE)));
+//                // set item width
+//                openItem.setWidth(DensityUtils.dp2px(getApplicationContext(), 90L));
+//                // set item title
+//                openItem.setTitle("编辑");
+//                // set item title fontsize
+//                openItem.setTitleSize(18);
+//                // set item title font color
+//                openItem.setTitleColor(Color.WHITE);
+//                // add to menu
+//                menu.addMenuItem(openItem);
 
                 // create "delete" item
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
@@ -130,15 +139,36 @@ public class CallSafeActivity extends Activity {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
+//                    case 0:
+//                        //edit
+//
+//                        break;
                     case 0:
-                        // open
-                        break;
-                    case 1:
                         // delete
+                        if (dao.delete(blackNumberInfos.get(position).getNumber())){
+                            mAdapter.remove(position);
+                            Toasts.showShort(getApplicationContext(),"删除成功");
+                        }
                         break;
                 }
                 // false : close the menu; true : not close the menu
                 return false;
+            }
+        });
+
+        listView.setAdapter(mAdapter = new QuickAdapter<BlackNumberInfo>(this, R.layout.item_call_safe, blackNumberInfos) {
+            @Override
+            protected void convert(BaseAdapterHelper helper, BlackNumberInfo item) {
+                helper.setText(R.id.tv_number, item.getNumber());
+                String mode = item.getMode();
+                if (mode.equals("1")) {
+                    mode = "来电拦截+短信";
+                } else if (mode.equals("2")) {
+                    mode = "电话拦截";
+                } else if (mode.equals("3")) {
+                    mode = "短信拦截";
+                }
+                helper.setText(R.id.tv_mode, mode);
             }
         });
 
@@ -151,36 +181,68 @@ public class CallSafeActivity extends Activity {
         });
     }
 
-    public void onEventMainThread(Integer event) {
-        mStartIndex += maxCount;
-        if (event == 0) {
-            llPb.setVisibility(View.INVISIBLE);
-            QuickAdapter s = null;
-            //填充数据
-            listView.setAdapter(mAdapter = new QuickAdapter<BlackNumberInfo>(this, R.layout.item_call_safe, blackNumberInfos) {
-                @Override
-                protected void convert(BaseAdapterHelper helper, BlackNumberInfo item) {
-                    helper.setText(R.id.tv_number, item.getNumber());
-                    String mode = item.getMode();
-                    if (mode.equals("1")) {
-                        mode = "来电拦截+短信";
-                    } else if (mode.equals("2")) {
-                        mode = "电话拦截";
-                    } else if (mode.equals("3")) {
-                        mode = "短信拦截";
-                    }
-                    helper.setText(R.id.tv_mode, mode);
-                }
-            });
-        } else if (event == 1) {
-            gl_Refresh.refreshComplete();
-            mAdapter.addAll(blackNumberInfos);
-        }
-    }
-
-
     public void addBlackNumber(View v) {
         //添加
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog dialog = builder.create();
+        View dialog_view = View.inflate(this, R.layout.dialog_add_black_number, null);
+        final EditText et_number = (EditText) dialog_view.findViewById(R.id.et_number);
+
+        Button btn_ok = (Button) dialog_view.findViewById(R.id.btn_ok);
+
+        Button btn_cancel = (Button) dialog_view.findViewById(R.id.btn_cancel);
+
+        final CheckBox cb_phone = (CheckBox) dialog_view.findViewById(R.id.cb_phone);
+
+        final CheckBox cb_sms = (CheckBox) dialog_view.findViewById(R.id.cb_sms);
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str_number = et_number.getText().toString().trim();
+                if(TextUtils.isEmpty(str_number)){
+                    Toast.makeText(CallSafeActivity.this, "请输入黑名单号码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!dao.findNumber(str_number).equals("")){
+                    Toasts.showShort(getApplicationContext(),"你输入的号码已经存在");
+                    return;
+                }
+
+                String mode = "";
+
+                if(cb_phone.isChecked()&& cb_sms.isChecked()){
+                    mode = "1";
+                }else if(cb_phone.isChecked()){
+                    mode = "2";
+                }else if(cb_sms.isChecked()){
+                    mode = "3";
+                }else{
+                    Toast.makeText(CallSafeActivity.this,"请勾选拦截模式",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                BlackNumberInfo blackNumberInfo = new BlackNumberInfo();
+                blackNumberInfo.setNumber(str_number);
+                blackNumberInfo.setMode(mode);
+                blackNumberInfos.add(0,blackNumberInfo);
+                //把电话号码和拦截模式添加到数据库。
+                dao.add(blackNumberInfo);
+                mAdapter.clear();
+                mAdapter.addAll(blackNumberInfos);
+                dialog.dismiss();
+            }
+        });
+        dialog.setView(dialog_view);
+        dialog.show();
+
+
     }
 
     @Override
