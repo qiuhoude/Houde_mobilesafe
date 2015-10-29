@@ -37,4 +37,12 @@
         android:layout_height="wrap_content"
         qiu:title="归属地提示框显示位置" />
 
+    <com.qiu.houde_mobilesafe.view.SettingItemView
+        android:id="@+id/siv_callsafe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        qiu:desc_off="黑名单已关闭"
+        qiu:desc_on="黑名单已开启"
+        qiu:title="黑名单设置" />
+
 </LinearLayout>

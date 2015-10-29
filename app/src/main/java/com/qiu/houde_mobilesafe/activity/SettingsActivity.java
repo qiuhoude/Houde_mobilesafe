@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.qiu.houde_mobilesafe.R;
 import com.qiu.houde_mobilesafe.service.AddressService;
+import com.qiu.houde_mobilesafe.service.CallSafeService;
 import com.qiu.houde_mobilesafe.utils.Consts;
 import com.qiu.houde_mobilesafe.utils.SPUtils;
 import com.qiu.houde_mobilesafe.utils.ServiceStatusUtils;
@@ -32,6 +33,8 @@ public class SettingsActivity extends Activity {
     SettingClickView scvStyle;
     @Bind(R.id.scv_location)
     SettingClickView scvLocation;
+    @Bind(R.id.siv_callsafe)
+    SettingItemView sivCallsafe;
 
 
     @Override
@@ -44,7 +47,29 @@ public class SettingsActivity extends Activity {
         initAddressView();
         initAddressStyleView();
         initAddressLocation();
+        initBlackNumber();
 
+    }
+
+    /**
+     * 初始化黑名单
+     */
+    private void initBlackNumber() {
+        boolean serviceRunning = ServiceStatusUtils.isServiceRunning(this, CallSafeService.class.getName());
+        initSettingView(sivCallsafe, serviceRunning, null);
+        final Intent service = new Intent(this, CallSafeService.class);
+        sivCallsafe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sivCallsafe.isChecked()) {
+                    // 设置不勾选sivCallsafe.setChecked(false);
+                    stopService(service);
+                } else {
+                    sivCallsafe.setChecked(true);
+                    startService(service);
+                }
+            }
+        });
     }
 
     private void initAddressLocation() {
