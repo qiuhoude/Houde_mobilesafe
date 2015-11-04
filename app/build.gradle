@@ -11,6 +11,7 @@ android {
         versionCode 1
         versionName "1.1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -28,5 +29,5 @@ dependencies {
     compile 'com.baoyz.swipemenulistview:library:1.3.0'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'in.srain.cube:ultra-ptr:1.0.11'
-
+    compile 'se.emilsjolander:stickylistheaders:2.7.0'
 }

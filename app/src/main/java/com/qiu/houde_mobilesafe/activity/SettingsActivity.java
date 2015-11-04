@@ -62,7 +62,8 @@ public class SettingsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (sivCallsafe.isChecked()) {
-                    // 设置不勾选sivCallsafe.setChecked(false);
+                    // 设置不勾选
+                    sivCallsafe.setChecked(false);
                     stopService(service);
                 } else {
                     sivCallsafe.setChecked(true);

@@ -88,6 +88,11 @@ public class HomeActivity extends Activity {
                         Intent callsafeIntent = new Intent(HomeActivity.this, CallSafeActivity.class);
                         startActivity(callsafeIntent);
                         break;
+                    case 2:
+                        //通讯卫士
+                        Intent appManagerIntent = new Intent(HomeActivity.this, AppManagerActivity.class);
+                        startActivity(appManagerIntent);
+                        break;
                     case 7:
                         //高级工具
                         Intent atoolsIntent = new Intent(HomeActivity.this, AToolsActivity.class);

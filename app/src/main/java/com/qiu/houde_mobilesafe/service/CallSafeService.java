@@ -14,7 +14,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.SmsMessage;
 
-import com.qiu.houde_mobilesafe.ITelephony;
+import com.android.internal.telephony.ITelephony;
 import com.qiu.houde_mobilesafe.db.dao.BlackNumberDao;
 import com.qiu.houde_mobilesafe.utils.Logs;
 
