@@ -26,7 +26,6 @@ import android.widget.TextView;
 import com.qiu.houde_mobilesafe.R;
 import com.qiu.houde_mobilesafe.bean.AppInfo;
 import com.qiu.houde_mobilesafe.engine.AppInfos;
-import com.qiu.houde_mobilesafe.utils.Logs;
 import com.qiu.houde_mobilesafe.utils.Toasts;
 
 import java.util.ArrayList;
@@ -267,7 +266,7 @@ public class AppManagerActivity extends Activity implements View.OnClickListener
                 holder.tv_header.setText("系统程序(" + sysSize + ")");
             }
 
-            Logs.d("position" + position);
+//            Logs.d("position" + position);
             return convertView;
         }
 
