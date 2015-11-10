@@ -21,4 +21,22 @@
         android:text="电话归属地查询"
         android:textColor="@color/black"
         android:textSize="20sp" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:clickable="true"
+        android:drawableLeft="@android:drawable/btn_star_big_on"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:onClick="backUpsms"
+        android:padding="10dp"
+        android:text="短信备份"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+
+
 </LinearLayout>

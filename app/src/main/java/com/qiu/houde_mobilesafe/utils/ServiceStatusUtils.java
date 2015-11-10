@@ -9,6 +9,8 @@ import java.util.List;
  * Created by Administrator on 2015/10/22.
  */
 public class ServiceStatusUtils {
+
+
     /**
      * 检测服务是否正在运行
      *
@@ -19,7 +21,7 @@ public class ServiceStatusUtils {
         ActivityManager am = (ActivityManager) ctx
                 .getSystemService(Context.ACTIVITY_SERVICE);
         //拿到100个运行中的服务
-        List<ActivityManager.RunningServiceInfo> runingServices = am.getRunningServices(100);
+        List<ActivityManager.RunningServiceInfo> runingServices = am.getRunningServices(200);
         for(ActivityManager.RunningServiceInfo runinfo : runingServices){
             String className = runinfo.service.getClassName();
             if (className.equals(serviceName)){

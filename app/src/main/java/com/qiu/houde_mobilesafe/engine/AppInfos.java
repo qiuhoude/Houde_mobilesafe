@@ -150,7 +150,7 @@ public class AppInfos {
                     taskInfo.setChecked(false);
                 }
             } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 //android有些系统进程名是找不到名字和图标的
                 taskInfo.setName(packageName);
                 taskInfo.setIcon(context.getResources().getDrawable(

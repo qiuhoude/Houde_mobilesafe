@@ -27,8 +27,14 @@ public class AddressDao {
             cursor.close();
         } else if (phoneNum.matches("^\\d+")) {
             switch (phoneNum.length()) {
-                case 3:
-                    address = "报警电话";
+                case 3:// 110 120 119 121 999
+                    if ("110".equals(phoneNum)) {
+                        address = "匪警";
+                    } else if ("120".equals(phoneNum)) {
+                        address = "急救";
+                    } else {
+                        address = "报警号码";
+                    }
                     break;
                 case 4:
                     address = "模拟器";

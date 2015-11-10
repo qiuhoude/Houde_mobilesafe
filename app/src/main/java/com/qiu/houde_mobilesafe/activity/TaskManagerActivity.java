@@ -3,6 +3,7 @@ package com.qiu.houde_mobilesafe.activity;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.LayoutInflater;
@@ -17,7 +18,10 @@ import android.widget.TextView;
 import com.qiu.houde_mobilesafe.R;
 import com.qiu.houde_mobilesafe.bean.TaskInfo;
 import com.qiu.houde_mobilesafe.engine.AppInfos;
+import com.qiu.houde_mobilesafe.utils.Consts;
+import com.qiu.houde_mobilesafe.utils.SPUtils;
 import com.qiu.houde_mobilesafe.utils.SystemInfoUtils;
+import com.qiu.houde_mobilesafe.utils.Toasts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +46,13 @@ public class TaskManagerActivity extends Activity {
     private Context mContext;
     private List<TaskInfo> taskInfos;
     private List<TaskInfo> userTaskInfos;
-    private List<TaskInfo> SystemTaskInfos;
+    private List<TaskInfo> systemTaskInfos;
     private MyAdapter myAdapter;
-    private ActivityManager mAm ;
+    private ActivityManager mAm;
+
+    private int mRunningProcessCount;
+    private long mAvailRam;
+    private long mTotalRam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,28 +61,28 @@ public class TaskManagerActivity extends Activity {
         mContext = getApplicationContext();
         mAm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         initDate();
         initView();
     }
 
     private void initView() {
-        tvTaskProcessCount.setText("运行中进程" + SystemInfoUtils.getRunningProcessCount(mContext) + "个");
+
+        tvTaskProcessCount.setText("运行中进程" + mRunningProcessCount + "个");
         tvTaskMemory.setText("剩余/总内存 " +
-                Formatter.formatFileSize(mContext, SystemInfoUtils.getAvailRam(mContext)) + "/"
-                + Formatter.formatFileSize(mContext, SystemInfoUtils.getTotalRam(mContext)));
+                Formatter.formatFileSize(mContext, mAvailRam) + "/"
+                + Formatter.formatFileSize(mContext, mTotalRam));
         listView.setAdapter(myAdapter = new MyAdapter(this, taskInfos));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//               CheckBox cb = (CheckBox) view.findViewById(R.id.cb_app_status);
-//                if (cb.isChecked()){
-//                    cb.setChecked(false);
-//                }else {
-//                    cb.setChecked(true);
-//                }
 
                 TaskInfo info = taskInfos.get(position);
-                info.setChecked(info.isChecked() ? false : true);
+                info.setChecked(!info.isChecked());
                 myAdapter.notifyDataSetChanged();
             }
         });
@@ -82,22 +90,30 @@ public class TaskManagerActivity extends Activity {
 
 
     private void initDate() {
-        taskInfos = AppInfos.getTaskInfos(mContext);
 
+        //初始化title
+        mRunningProcessCount = SystemInfoUtils.getRunningProcessCount(mContext);
+        mAvailRam = SystemInfoUtils.getAvailRam(mContext);
+        mTotalRam = SystemInfoUtils.getTotalRam(mContext);
+
+        taskInfos = AppInfos.getTaskInfos(mContext);
         userTaskInfos = new ArrayList<TaskInfo>();
-        SystemTaskInfos = new ArrayList<TaskInfo>();
+        systemTaskInfos = new ArrayList<TaskInfo>();
 
         for (TaskInfo taskInfo : taskInfos) {
             //用户程序
             if (taskInfo.isUserTask()) {
                 userTaskInfos.add(taskInfo);
             } else {
-                SystemTaskInfos.add(taskInfo);
+                //控制是否显示系统进程
+                if ((boolean)SPUtils.get(mContext, Consts.IS_SHOW_SYSTEM,true)) {
+                    systemTaskInfos.add(taskInfo);
+                }
             }
         }
         taskInfos.clear();
         taskInfos.addAll(userTaskInfos);
-        taskInfos.addAll(SystemTaskInfos);
+        taskInfos.addAll(systemTaskInfos);
     }
 
 
@@ -122,9 +138,9 @@ public class TaskManagerActivity extends Activity {
                 holder = (ViewHolderHeader) convertView.getTag();
             }
             if (getHeaderId(position) == 0L) {
-                holder.tv_header.setText("用户进程");
+                holder.tv_header.setText("用户进程 " + userTaskInfos.size());
             } else {
-                holder.tv_header.setText("系统进程");
+                holder.tv_header.setText("系统进程" + systemTaskInfos.size());
             }
             return convertView;
         }
@@ -203,7 +219,7 @@ public class TaskManagerActivity extends Activity {
      * @param v
      */
     public void selectAll(View v) {
-        for (TaskInfo info : taskInfos){
+        for (TaskInfo info : taskInfos) {
             info.setChecked(true);
         }
         myAdapter.notifyDataSetChanged();
@@ -215,8 +231,8 @@ public class TaskManagerActivity extends Activity {
      * @param v
      */
     public void selectOppsite(View v) {
-        for (TaskInfo info : taskInfos){
-            info.setChecked(false);
+        for (TaskInfo info : taskInfos) {
+            info.setChecked(!info.isChecked());
         }
         myAdapter.notifyDataSetChanged();
 
@@ -228,19 +244,49 @@ public class TaskManagerActivity extends Activity {
      * @param v
      */
     public void killProcess(View v) {
-        for (TaskInfo info : taskInfos){
-            mAm.killBackgroundProcesses(info.getPackageName());
+
+        List<TaskInfo> killLists = new ArrayList<TaskInfo>();
+
+        // 清理的总共的进程个数
+        int totalCount = 0;
+        // 清理的进程的大小
+        int killMem = 0;
+
+        for (TaskInfo info : taskInfos) {
+            if (info.getPackageName().equals(getPackageName())||!info.isChecked()) {
+                continue;
+            }
+            killLists.add(info);
+            totalCount++;
+            killMem += info.getMemsize();
         }
 
+        for (TaskInfo info : killLists) {
+            taskInfos.remove(info);
+            if (info.isUserTask()) {
+                userTaskInfos.remove(info);
+            } else {
+                systemTaskInfos.remove(info);
+            }
+            mAm.killBackgroundProcesses(info.getPackageName());
+        }
+        Toasts.showShort(this, "共清理" + totalCount + "个进程,释放" + Formatter.formatFileSize(mContext, killMem) + "内存");
+
+        //设置title
+
+        tvTaskProcessCount.setText("运行中进程" + (mRunningProcessCount-totalCount) + "个");
+        tvTaskMemory.setText("剩余/总内存 " +
+                Formatter.formatFileSize(mContext, (mAvailRam+killMem)) + "/"
+                + Formatter.formatFileSize(mContext, mTotalRam));
+        myAdapter.notifyDataSetChanged();
     }
 
     /**
      * 设置
      *
-     * @param v
+     * @param
      */
     public void openSetting(View v) {
-
-
+        startActivity(new Intent(this,TaskManagerSettingActivity.class));
     }
 }

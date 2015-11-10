@@ -27,4 +27,5 @@ public class Consts {
     public static final String LAST_X = "lastX";
     public static final String LAST_Y = "lastY";
     public static final String SAFE_DB = "safe.db";
+    public static final String IS_SHOW_SYSTEM = "is_show_system";
 }
