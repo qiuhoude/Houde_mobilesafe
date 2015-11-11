@@ -58,6 +58,7 @@
         <activity android:name=".activity.AppManagerActivity" />
         <activity android:name=".activity.TaskManagerActivity" />
         <activity android:name=".activity.TaskManagerSettingActivity" />
+        <activity android:name=".activity.AntivirusActivity" />
         <activity
             android:name=".activity.DragViewActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
@@ -100,6 +101,32 @@
             android:enabled="true"
             android:exported="true" >
         </service>
+
+        <receiver android:name=".receiver.KillProcessAppWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/kill_process_app_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".service.KillProcesWidgetService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <receiver
+            android:name=".receiver.KillProcessAllReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.qiu.houde_mobilesafe.killall"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

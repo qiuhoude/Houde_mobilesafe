@@ -60,7 +60,7 @@ public class HomeActivity extends Activity {
             }
         };
         gvHome.setAdapter(mAdapter);
-        tvHomeMarquee.setText("宣传打网球的范围分为全奶粉穷疯欺负你如果fire刚iu热舞i股本部分国企哦i半个入编单位年轻哦弄info青年");
+        tvHomeMarquee.setText("使用");
 
         gvHome.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -97,6 +97,11 @@ public class HomeActivity extends Activity {
                         //进程管理
                         Intent taskManagerIntent = new Intent(HomeActivity.this, TaskManagerActivity.class);
                         startActivity(taskManagerIntent);
+                        break;
+                    case 5:
+                        //病毒查收
+                        Intent antivirusIntent = new Intent(HomeActivity.this, AntivirusActivity.class);
+                        startActivity(antivirusIntent);
                         break;
                     case 7:
                         //高级工具

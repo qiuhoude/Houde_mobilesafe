@@ -13,10 +13,13 @@ import java.util.List;
 public class KillProcessService extends Service {
 
     private LockScreenReceiver receiver;
+
     @Override
     public IBinder onBind(Intent intent) {
-        throw null;
+
+        return null;
     }
+
 
 
     private class LockScreenReceiver extends BroadcastReceiver {
@@ -33,6 +36,7 @@ public class KillProcessService extends Service {
 
         }
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -41,12 +45,18 @@ public class KillProcessService extends Service {
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         //注册一个锁屏的广播
         registerReceiver(receiver, filter);
+
+
+
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(receiver);
-        receiver = null;
+        if (receiver != null) {
+            unregisterReceiver(receiver);
+            receiver = null;
+        }
     }
 }

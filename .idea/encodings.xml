@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiu/houde_mobilesafe/adapter/BaseAdapterHelper.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiu/houde_mobilesafe/adapter/BaseQuickAdapter.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiu/houde_mobilesafe/adapter/EnhancedQuickAdapter.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiu/houde_mobilesafe/adapter/MultiItemTypeSupport.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiu/houde_mobilesafe/adapter/QuickAdapter.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiu/houde_mobilesafe/adapter/BaseAdapterHelper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiu/houde_mobilesafe/adapter/BaseQuickAdapter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiu/houde_mobilesafe/adapter/EnhancedQuickAdapter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiu/houde_mobilesafe/adapter/MultiItemTypeSupport.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiu/houde_mobilesafe/adapter/QuickAdapter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiu/houde_mobilesafe/db/dao/AntivirusDao.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/qiu/houde_mobilesafe/utils/SmsUtils.java" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>

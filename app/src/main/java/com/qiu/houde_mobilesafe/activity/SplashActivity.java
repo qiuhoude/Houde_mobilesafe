@@ -64,11 +64,15 @@ public class SplashActivity extends Activity {
         anim.setDuration(3000);
         rlSplRoot.setAnimation(anim);
 
+        //拷贝地址数据库
         copyDB(Consts.ADDRESS_DB);
-        mHandler.sendEmptyMessageDelayed(REDIRECT_MAIN, 3000);
-
+        //拷贝病毒数据库
+        copyDB(Consts.ANTIVIRUS_DB);
         //创建快捷图标
         createShortcut();
+
+        mHandler.sendEmptyMessageDelayed(REDIRECT_MAIN, 3000);
+
     }
 
 
@@ -82,7 +86,7 @@ public class SplashActivity extends Activity {
         OutputStream out = null;
         File fileDB = new File(getFilesDir(), dbName);
         if (fileDB.exists()) {
-            Logs.d("address.db已经存在");
+            Logs.d(dbName+"已经存在");
             return;
         }
         try {
