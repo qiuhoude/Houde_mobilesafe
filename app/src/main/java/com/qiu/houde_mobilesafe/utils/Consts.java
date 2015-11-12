@@ -29,4 +29,5 @@ public class Consts {
     public static final String SAFE_DB = "safe.db";
     public static final String IS_SHOW_SYSTEM = "is_show_system";
     public static final String ANTIVIRUS_DB = "antivirus.db";
+    public static final String APPLOCK_DB = "applock.db";
 }

@@ -1,4 +1,4 @@
-package com.qiu.houde_mobilesafe.db.dao;
+package com.qiu.houde_mobilesafe.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

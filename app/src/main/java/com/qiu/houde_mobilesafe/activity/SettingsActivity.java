@@ -11,6 +11,7 @@ import android.view.View;
 import com.qiu.houde_mobilesafe.R;
 import com.qiu.houde_mobilesafe.service.AddressService;
 import com.qiu.houde_mobilesafe.service.CallSafeService;
+import com.qiu.houde_mobilesafe.service.WatchDogService;
 import com.qiu.houde_mobilesafe.utils.Consts;
 import com.qiu.houde_mobilesafe.utils.SPUtils;
 import com.qiu.houde_mobilesafe.utils.ServiceStatusUtils;
@@ -35,6 +36,8 @@ public class SettingsActivity extends Activity {
     SettingClickView scvLocation;
     @Bind(R.id.siv_callsafe)
     SettingItemView sivCallsafe;
+    @Bind(R.id.siv_showdog)
+    SettingItemView sivShowdog;
 
 
     @Override
@@ -48,7 +51,30 @@ public class SettingsActivity extends Activity {
         initAddressStyleView();
         initAddressLocation();
         initBlackNumber();
+        initShowDog();
 
+    }
+
+    /**
+     * 初始化看门狗
+     */
+    private void initShowDog() {
+        boolean serviceRunning = ServiceStatusUtils.isServiceRunning(this, WatchDogService.class.getName());
+        initSettingView(sivShowdog, serviceRunning, null);
+        final Intent service = new Intent(this, WatchDogService.class);
+        sivShowdog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sivShowdog.isChecked()) {
+                    // 设置不勾选
+                    sivShowdog.setChecked(false);
+                    stopService(service);
+                } else {
+                    sivShowdog.setChecked(true);
+                    startService(service);
+                }
+            }
+        });
     }
 
     /**

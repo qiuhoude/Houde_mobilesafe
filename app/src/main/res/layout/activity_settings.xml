@@ -45,4 +45,12 @@
         qiu:desc_on="黑名单已开启"
         qiu:title="黑名单设置" />
 
+    <com.qiu.houde_mobilesafe.view.SettingItemView
+        android:id="@+id/siv_showdog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        qiu:desc_off="看门狗关闭"
+        qiu:desc_on="看门狗开启"
+        qiu:title="看萌狗设置" />
+
 </LinearLayout>

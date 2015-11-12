@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.qiu.houde_mobilesafe.bean.BlackNumberInfo;
+import com.qiu.houde_mobilesafe.db.BlackNumberDBOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
