@@ -1,12 +1,15 @@
 package com.qiu.houde_mobilesafe.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.qiu.houde_mobilesafe.R;
+import com.qiu.houde_mobilesafe.service.WatchDogService;
+import com.qiu.houde_mobilesafe.utils.Logs;
 import com.qiu.houde_mobilesafe.utils.Toasts;
 
 import butterknife.Bind;
@@ -54,6 +57,8 @@ public class EnterPwdActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_pwd);
         ButterKnife.bind(this);
+        packageName  = getIntent().getStringExtra(WatchDogService.PACKAGE_NAME);
+
         initView();
     }
 
@@ -82,31 +87,26 @@ public class EnterPwdActivity extends Activity {
             }
         });
         //ok
-//        btOk.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String result = etPwd.getText().toString();
-//                if ("123".equals(result)) {
-//                    // 如果密码正确。说明是自己人
-//                    /**
-//                     * 是自己家人。不要拦截他
-//                     */
-//                    System.out.println("密码输入正确");
-//
-//                    Intent intent = new Intent();
-//                    // 发送广播。停止保护
-//                    intent.setAction("com.itheima.mobileguard.stopprotect");
-//                    // 跟狗说。现在停止保护短信
-//                    intent.putExtra("packageName", packageName);
-//
-//                    sendBroadcast(intent);
-//
-//                    finish();
-//                } else {
-//                    Toasts.showShort(getApplicationContext(), "密码错误");
-//                }
-//            }
-//        });
+        btOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String result = etPwd.getText().toString();
+                if ("123".equals(result)) {
+                    Logs.d("密码输入正确");
+                    Intent intent = new Intent();
+                    // 发送广播。停止保护
+                    intent.setAction("com.qiu.mobile.stoptask");
+                    // 跟狗说。现在停止保护短信
+                    intent.putExtra("packageName", packageName);
+
+                    sendBroadcast(intent);
+
+                    finish();
+                } else {
+                    Toasts.showShort(getApplicationContext(), "密码错误");
+                }
+            }
+        });
         setBtnOnClick(bt0);
         setBtnOnClick(bt1);
         setBtnOnClick(bt2);
@@ -135,5 +135,15 @@ public class EnterPwdActivity extends Activity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        // 当用户输入后退健 的时候。我们进入到桌面
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.MAIN");
+        intent.addCategory("android.intent.category.HOME");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addCategory("android.intent.category.MONKEY");
+        startActivity(intent);
+    }
 
 }

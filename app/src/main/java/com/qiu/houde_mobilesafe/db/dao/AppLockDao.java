@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 import com.qiu.houde_mobilesafe.db.AppLockOpenHelper;
 
@@ -15,9 +16,11 @@ import java.util.List;
  */
 public class AppLockDao {
 
+    public static final String URI_CHANGE = "content://com.qiu.mobile.watchdog.change";
     private AppLockOpenHelper helper;
-
+    private Context mContext;
     public AppLockDao(Context context) {
+        mContext = context;
         helper = new AppLockOpenHelper(context);
     }
 
@@ -33,6 +36,8 @@ public class AppLockDao {
         values.put("packagename", packageName);
         db.insert("info", null, values);
         db.close();
+        mContext.getContentResolver().notifyChange(Uri.parse(URI_CHANGE), null);
+
     }
 
     /**
@@ -44,6 +49,8 @@ public class AppLockDao {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.delete("info", "packagename=?", new String[] { packageName });
         db.close();
+        //自定义内容观察者
+        mContext.getContentResolver().notifyChange(Uri.parse(URI_CHANGE),null);
     }
     /**
      * 查询当前的包是否在程序锁里面

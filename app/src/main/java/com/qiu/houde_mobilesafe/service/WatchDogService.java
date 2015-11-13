@@ -3,11 +3,16 @@ package com.qiu.houde_mobilesafe.service;
 import android.app.ActivityManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.ContentObserver;
+import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
 
+import com.qiu.houde_mobilesafe.activity.EnterPwdActivity;
 import com.qiu.houde_mobilesafe.db.dao.AppLockDao;
 
 import java.util.List;
@@ -22,15 +27,23 @@ public class WatchDogService extends Service {
     private List<String> appLockInfos;
     private WatchDogReceiver receiver;
     //临时停止保护的包名
-    private String tempStopPackageName;
+    private String tempStopPackageName ="";
     private Context mContext;
     private ScheduledExecutorService executor;
-
+    public static final String PACKAGE_NAME = "packageName";
 
     class WatchDogReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("com.qiu.mobile.stoptask")){
+                //停止保护当前进程
+                tempStopPackageName = intent.getStringExtra(PACKAGE_NAME);
 
+            }else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
+                startWatDog();
+            }else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
+                stopWatchDog();
+            }
         }
     }
 
@@ -40,6 +53,20 @@ public class WatchDogService extends Service {
         return null;
     }
 
+    private class AppLockContentObserver extends ContentObserver {
+
+
+        public AppLockContentObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            appLockInfos = dao.findAll();
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -47,6 +74,12 @@ public class WatchDogService extends Service {
         dao = new AppLockDao(mContext);
         //获取所以需要加锁的报名
         appLockInfos = dao.findAll();
+        //注册广播接受者
+        ContentResolver resolver = getContentResolver();
+        resolver.registerContentObserver(Uri.parse(AppLockDao.URI_CHANGE),true,
+                new AppLockContentObserver(new Handler()));
+
+
         //获取activity管理器
         mAm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         //注册广播接受者
@@ -71,6 +104,8 @@ public class WatchDogService extends Service {
 
     class MyTask implements Runnable {
 
+
+
         @Override
         public void run() {
 
@@ -78,8 +113,13 @@ public class WatchDogService extends Service {
             ActivityManager.RunningAppProcessInfo process = processes.get(0);
             String packageName = getPackageManager().getPackagesForUid(process.uid)[0];
             if (appLockInfos.contains(packageName)){
-
-            }
+                if (!packageName.equals(tempStopPackageName)){
+                    Intent intent = new Intent(WatchDogService.this,EnterPwdActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra(PACKAGE_NAME,packageName);
+                    startActivity(intent);
+                }
+             }
 
         }
     }
@@ -100,5 +140,6 @@ public class WatchDogService extends Service {
     public void onDestroy() {
         super.onDestroy();
         stopWatchDog();
+        unregisterReceiver(receiver);
     }
 }
